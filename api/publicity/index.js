@@ -3,12 +3,11 @@ const router = require('express').Router();
 const newSchema = require('../../schema/newSchema');
 
 const Validator = require('jsonschema').Validator;
-const validator = Validator();
+const validator = new Validator();
 
 module.exports = (db) => {
     const participantDB = require('../../db/participant')(db);
 
-    // Get Events by Token
     // POST /publicity/find
     router.post('/find', async (req, res) => {
 
@@ -24,17 +23,17 @@ module.exports = (db) => {
             const id = req.body.username;
             const token = req.body.token;
             const events = await participantDB.getEvents(id);
-            console.log(events);
+
             const orders = events.orders;
             const result = {};
-            console.log(orders);
+
             for (let i = 0; i < orders.length; ++i) {
                 if (orders[i].token === token) {
                     result.events = orders[i].events;
                     result.sum = orders[i].sum;
                 }
             }
-            console.log(result);
+
             res.status(200).send(result);
 
         } catch (e) {
@@ -43,7 +42,6 @@ module.exports = (db) => {
 
     });
 
-    //update payment status
     //Post /publicity/paid
     router.post('/paid', async (req, res) => {
 
@@ -59,9 +57,9 @@ module.exports = (db) => {
             const id = req.body.username;
             const token = req.body.token;
             const participant = await participantDB.getEvents(id);
-            console.log(participant);
+
             const orders = participant.orders;
-            console.log(orders);
+
             for (let i = 0; i < orders.length; ++i) {
                 if (orders[i].token === token) {
                     participant.orders[i].paid = true;
@@ -73,9 +71,6 @@ module.exports = (db) => {
         } catch (e) {
             console.log("Error related to getting events")
         }
-
     });
-
-
     return router;
 };

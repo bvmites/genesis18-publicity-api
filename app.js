@@ -19,14 +19,12 @@ const users = require('./api/user');
 const auth = require('./middleware/auth');
 
 dotenv.config();
-// const server = require('http').createServer(app);
-// server.listen(4000);
 (async () => {
 
     const client = await MongoClient.connect(process.env.DB,{useNewUrlParser: true});
     const db = client.db('Genesis-18');
     console.log('Connected to database');
-    app.use('/events', auth, events(db));
+    app.use('/publicity', auth, events(db));
     app.use('/users', users(db));
 })();
 
