@@ -34,6 +34,7 @@ module.exports = (db) => {
     router.post('/paid', async (req, res) => {
         try {
             const id = req.body.id;
+            const publicityid = req.body.publicityid;
             const token = req.body.token;
             const participant = await participantDB.getEvents(id);
             console.log(participant);
@@ -42,6 +43,7 @@ module.exports = (db) => {
             for (let i = 0; i < orders.length; ++i) {
                 if (orders[i].token == token) {
                     participant.orders[i].paid = true;
+                    participant.orders[i].paidTo = publicityid;
                 }
             }
             const paid = await participantDB.markPaid(id, participant);
