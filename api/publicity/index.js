@@ -68,7 +68,7 @@ module.exports = (db) => {
                 }
             }
             const paid = await participantDB.markPaid(id, participant);
-            res.status(200).send("updated");
+            res.status(200).json("updated");
 
         } catch (e) {
             console.log("Error related to getting events")
