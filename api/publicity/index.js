@@ -56,9 +56,11 @@ module.exports = (db) => {
 
             const id = req.body.username;
             const publicityid = req.body.publicityid;
+            const eventids = req.body.eventids;
+            console.log(eventids);
             const token = req.body.token;
             const participant = await participantDB.getEvents(id);
-
+            const participantId = participant._id;
             const orders = participant.orders;
 
             for (let i = 0; i < orders.length; ++i) {
@@ -68,10 +70,18 @@ module.exports = (db) => {
                 }
             }
             const paid = await participantDB.markPaid(id, participant);
+            for (let i = 0; i < eventids.length; ++i) {
+                const getParticipant = await participantDB.getParticipant(eventids[i]);
+                console.log(getParticipant);
+                const eventId = getParticipant._id;
+                getParticipant.participants.push(participantId);
+                console.log(getParticipant);
+                const updateParticipant = await participantDB.updateParticipant(eventId,getParticipant);
+            }
             res.status(200).json("updated");
 
         } catch (e) {
-            console.log("Error related to getting events")
+            console.log(e.message);
         }
 
     });
