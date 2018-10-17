@@ -1,6 +1,8 @@
 const router = require('express').Router();
 
 const newSchema = require('../../schema/newSchema');
+const paidSchema = require('../../schema/paidSchema');
+
 
 const Validator = require('jsonschema').Validator;
 const validator = new Validator();
@@ -49,7 +51,7 @@ module.exports = (db) => {
         try {
             let schema = req.body;
             const error = new Error();
-            if (!validator.validate(schema, newSchema).valid) {
+            if (!validator.validate(schema, paidSchema).valid) {
                 error.message = 'Invalid request';
                 error.code = 'ValidationException';
                 throw error;
