@@ -19,8 +19,8 @@ const users = require('./api/user');
 const auth = require('./middleware/auth');
 
 dotenv.config();
-const server = require('http').createServer(app);
-server.listen(4000);
+// const server = require('http').createServer(app);
+// server.listen(4000);
 (async () => {
 
     const client = await MongoClient.connect(process.env.DB,{useNewUrlParser: true});

@@ -7,6 +7,7 @@ const validator = new Validator();
 
 module.exports = (db) => {
     const participantDB = require('../../db/participant')(db);
+    const eventDB = require('../../db/event')(db);
 
     // POST /publicity/find
     router.post('/find', async (req, res) => {
@@ -56,24 +57,38 @@ module.exports = (db) => {
 
             const id = req.body.username;
             const publicityid = req.body.publicityid;
-            const eventids = req.body.eventids;
+            // const eventids = req.body.eventids;
             const token = req.body.token;
             const participant = await participantDB.getEvents(id);
-            const participantId = participant._id;
+            // console.log(participant);
+            const participantId = participant.id;
             const orders = participant.orders;
+            for(let i = 0; i < orders.length; ++i){
+                if(orders[i].token === token){
 
+                }
+            }
+            // const eventids = participant
+            let eventIds = []
             for (let i = 0; i < orders.length; ++i) {
                 if (orders[i].token === token) {
                     participant.orders[i].paid = true;
                     participant.orders[i].paidTo = publicityid;
+
+                    for(let j = 0; j < participant.orders[i].events.length ; ++j){
+                        eventIds.push(participant.orders[i].events[j])
+                    }
+                    // console.log(eventIds);
                 }
             }
             const paid = await participantDB.markPaid(id, participant);
-            for (let i = 0; i < eventids.length; ++i) {
-                const getParticipant = await participantDB.getParticipant(eventids[i]);
-                const eventId = getParticipant._id;
-                getParticipant.participants.push(participantId);
-                const updateParticipant = await participantDB.updateParticipant(eventId,getParticipant);
+            for (let i = 0; i < eventIds.length; ++i) {
+                // console.log(eventIds[i]);
+                const newEvent = await eventDB.getNewEvent(eventIds[i]);
+                // console.log(newEvent);
+                const eventId = newEvent._id;
+                newEvent.participants.push(participantId);
+                const updateParticipant = await eventDB.updateParticipant(eventId,newEvent);
             }
             res.status(200).json("updated");
 
