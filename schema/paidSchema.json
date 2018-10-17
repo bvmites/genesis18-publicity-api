@@ -1,3 +1,18 @@
 {
-  ""
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string",
+      "minLength": 1
+    },
+    "token": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 6
+    },
+    "publicityId": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
 }

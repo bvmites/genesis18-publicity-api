@@ -56,7 +56,7 @@ module.exports = (db) => {
             }
 
             const id = req.body.username;
-            const publicityid = req.body.publicityid;
+            const publicityId = req.body.publicityId;
             // const eventids = req.body.eventids;
             const token = req.body.token;
             const participant = await participantDB.getEvents(id);
@@ -73,7 +73,7 @@ module.exports = (db) => {
             for (let i = 0; i < orders.length; ++i) {
                 if (orders[i].token === token) {
                     participant.orders[i].paid = true;
-                    participant.orders[i].paidTo = publicityid;
+                    participant.orders[i].paidTo = publicityId;
 
                     for(let j = 0; j < participant.orders[i].events.length ; ++j){
                         eventIds.push(participant.orders[i].events[j])
