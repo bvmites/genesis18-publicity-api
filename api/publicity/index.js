@@ -34,6 +34,7 @@ module.exports = (db) => {
                 if (orders[i].token === token) {
                     result.events = orders[i].events;
                     result.sum = orders[i].sum;
+                    result.paid = orders[i].paid;
                 }
             }
 
