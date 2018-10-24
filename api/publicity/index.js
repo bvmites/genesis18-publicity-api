@@ -43,7 +43,6 @@ module.exports = (db) => {
         } catch (e) {
             console.log("Error related to getting events")
         }
-
     });
 
     //Post /publicity/paid
@@ -98,9 +97,34 @@ module.exports = (db) => {
         } catch (e) {
             console.log(e.message);
         }
-
     });
 
-
+    //GET publicity/getall
+    router.get('/getall', async (request, response) => {
+        try{
+            let all = await participantDB.getall();
+            // console.log(all[4].orders.length);
+            ans = [];
+            for(let j = 0; j < all.length; ++j){
+                for(let i=0; i < all[j].orders.length; ++i){
+                    if (all[j].orders[i].paid === false){
+                        let notpaid = {};
+                        notpaid = {
+                            id: all[j].id,
+                            name: all[j].name,
+                            phone: all[j].phone,
+                            token: all[j].orders[i].token
+                        };
+                        ans.push(notpaid);
+                    }
+                }
+            }
+            // console.log(ans);
+            response.status(200).json(ans);
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+    });
     return router;
 };

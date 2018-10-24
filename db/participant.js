@@ -5,6 +5,9 @@ module.exports = (db) => ({
     },
     markPaid: (id, newParticipant) => {
         return db.collection('participants').findOneAndReplace({id: id}, newParticipant);
+    },
+    getall: ()=>{
+        return db.collection('participants').find({}).toArray();
     }
     // getParticipant: (id) => {
     //     return db.collection('events').findOne({_id: ObjectId(id)});
