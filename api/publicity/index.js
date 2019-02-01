@@ -126,5 +126,20 @@ module.exports = (db) => {
             console.log(e.message);
         }
     });
+
+    //GET /publicity/all
+    router.get('/all',async (request, response)=> {
+        try{
+            let all = await participantDB.getall();
+            console.log(all);
+            // ans = [];
+
+            // console.log(ans);
+            response.status(200).json(all);
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+    });
     return router;
 };
